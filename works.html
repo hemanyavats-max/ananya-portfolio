@@ -615,7 +615,7 @@ loop();
 
     // Second pass: draw with wave strips
     var wc = document.createElement('canvas');
-    wc.width = tW + 80; wc.height = tH;
+    wc.width = Math.max(tW + 80, window.innerWidth); wc.height = tH;
     var wctx = wc.getContext('2d');
     wctx.font = srcFont;
     wctx.fillStyle = '#f2b8ca';
@@ -631,10 +631,13 @@ loop();
     tctx.textBaseline = 'alphabetic';
     tctx.fillText(TEXT, 10, FONT_SIZE_SRC);
 
+    // centre the text horizontally in the canvas
+    var centreX = (wc.width - tW) / 2;
+
     // now draw in horizontal strips with sine wave offset
     for (var y = 0; y < tH; y += stripH) {
       var wave = Math.sin(time * 2.2 + y * 0.035) * waveMag;
-      var xOff = wave + mxOff + 40; // 40 = centre padding
+      var xOff = centreX + wave + mxOff;
       wctx.drawImage(tmp, 0, y, tW, stripH, xOff, y, tW, stripH);
     }
 
