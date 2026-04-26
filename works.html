@@ -13,21 +13,15 @@
   --ink:#1a0a10;--muted:#9e7585;
 }
 html{scroll-behavior:smooth}
-body{background:#0d0508;font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;min-height:100vh}
-
-/* CURSOR */
-#cursor{position:fixed;top:0;left:0;z-index:9999;width:12px;height:12px;background:var(--pink);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:screen}
-#cursor-ring{position:fixed;top:0;left:0;z-index:9998;width:36px;height:36px;border:1px solid rgba(232,121,154,.5);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s}
-body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:20px;height:20px}
-body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;border-color:rgba(232,121,154,.8)}
+body{background:#0d0508;font-family:'DM Sans',sans-serif;overflow-x:hidden;min-height:100vh}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px}
 nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);backdrop-filter:blur(20px);border-bottom:1px solid rgba(232,121,154,.12)}
-.nav-logo{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:.15em;color:rgba(255,255,255,.9);display:flex;align-items:center;gap:10px;text-decoration:none;cursor:none}
+.nav-logo{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:.15em;color:rgba(255,255,255,.9);display:flex;align-items:center;gap:10px;text-decoration:none;}
 .nav-pulse{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:pulse-nav 2s cubic-bezier(.4,0,.6,1) infinite}
 @keyframes pulse-nav{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,121,154,.5)}50%{opacity:.8;transform:scale(1.1);box-shadow:0 0 0 6px rgba(232,121,154,0)}}
-.nav-back{position:relative;z-index:1;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;cursor:none;transition:color .3s;display:flex;align-items:center;gap:8px}
+.nav-back{position:relative;z-index:1;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;;transition:color .3s;display:flex;align-items:center;gap:8px}
 .nav-back:hover{color:var(--pink-light)}
 
 /* AMBIENT */
@@ -59,7 +53,7 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
 
 /* PROJECT STRIP */
 .project-strip{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:56px 56px 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;grid-auto-rows:auto;animation:fade-up .9s ease .65s both}
-.proj{padding:26px 24px 26px 0;border-top:1px solid rgba(232,121,154,.1);transition:border-color .4s;cursor:none}
+.proj{padding:26px 24px 26px 0;border-top:1px solid rgba(232,121,154,.1);transition:border-color .4s;}
 .proj:hover{border-color:rgba(232,121,154,.42)}
 .proj-num{font-size:9px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,184,202,.28);margin-bottom:10px}
 .proj-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:#fff;line-height:1.2;margin-bottom:8px;transition:color .3s}
@@ -71,7 +65,7 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
 /* BOTTOM */
 .bottom-nav{border-top:1px solid rgba(232,121,154,.08);padding:30px 56px;display:flex;justify-content:space-between;align-items:center}
 .bn-left{font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.18)}
-.back-btn{display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(232,121,154,.28);border-radius:100px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,184,202,.75);text-decoration:none;cursor:none;transition:border-color .3s,color .3s,box-shadow .3s}
+.back-btn{display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(232,121,154,.28);border-radius:100px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,184,202,.75);text-decoration:none;;transition:border-color .3s,color .3s,box-shadow .3s}
 .back-btn:hover{border-color:rgba(232,121,154,.65);color:#fff;box-shadow:0 0 18px rgba(232,121,154,.12)}
 
 @keyframes fade-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
@@ -117,9 +111,6 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
 <body>
 
 <div class="ambient"><div class="ab ab1"></div><div class="ab ab2"></div></div>
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
 <nav>
   <a class="nav-logo" href="index.html">
     <div class="nav-pulse"></div>Ananya Gupta
@@ -192,14 +183,6 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
   <span class="bn-left">Ananya Gupta &middot; CS (IoT) &middot; VIT Vellore</span>
   <a class="back-btn" href="index.html">&#8592; Return Home</a>
 </div>
-
-<!-- CURSOR -->
-<script>
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-(function L(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(L)})();
-</script>
 
 <!-- WEBGL CIRCULAR GALLERY - pure WebGL, no dependencies -->
 <script>
