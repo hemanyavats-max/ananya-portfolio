@@ -76,6 +76,42 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
 
 @keyframes fade-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
+
+/* ─── MOBILE ─── */
+@media (max-width: 768px) {
+
+  /* NAV */
+  nav { padding: 0 20px; height: 60px; }
+
+  /* PAGE HEADER */
+  .page-header { padding: 88px 20px 0; }
+  .page-title { font-size: clamp(38px, 11vw, 56px); }
+  .page-sub { max-width: 100%; font-size: 13px; }
+
+  /* DRAG HINT */
+  .drag-hint { padding: 20px 20px 0; }
+
+  /* GALLERY */
+  .gallery-wrap { height: 44vh; margin-top: 20px; }
+
+  /* PROJECT STRIP */
+  .project-strip {
+    grid-template-columns: 1fr;
+    padding: 36px 20px 48px;
+    gap: 0;
+  }
+  .proj { padding: 20px 0; }
+  .proj-name { font-size: 17px; }
+  .proj-desc { font-size: 11px; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 20px;
+  }
+}
 </style>
 </head>
 <body>
@@ -538,8 +574,8 @@ loop();
   var CHARSET = " .'\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 
   var TEXT = 'WORKS';
-  var FONT_SIZE_SRC = 240;   // source text px size
-  var ASCII_FONT_PX = 9;     // rendered ascii char size
+  var FONT_SIZE_SRC = window.innerWidth < 768 ? 100 : 240;   // source text px size
+  var ASCII_FONT_PX = window.innerWidth < 768 ? 7 : 9;       // rendered ascii char size
   var time = 0;
   var mouseX = 0.5, mouseY = 0.5;
 
