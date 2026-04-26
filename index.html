@@ -47,38 +47,13 @@
     color: var(--ink);
     font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
-    cursor: none;
+    cursor: auto;
   }
 
   /* Show default cursor on the loader so interaction is visible */
   #loader { cursor: crosshair; }
 
-  /* ─── CUSTOM CURSOR ─── */
-  #cursor {
-    position: fixed; top: 0; left: 0; z-index: 9999;
-    width: 12px; height: 12px;
-    background: var(--pink);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition: transform 0.08s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
-    mix-blend-mode: multiply;
-  }
-  #cursor-ring {
-    position: fixed; top: 0; left: 0; z-index: 9998;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(232,121,154,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
-  }
-  body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 20px; height: 20px; }
-  body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
-    width: 56px; height: 56px;
-    border-color: rgba(232,121,154,0.8);
-  }
+  
 
   /* ─── SAKURA PETAL CANVAS ─── */
   #sakura-canvas {
@@ -123,7 +98,7 @@
   .nav-links a {
     font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
     text-transform: uppercase; color: var(--ink2);
-    text-decoration: none; cursor: none;
+    text-decoration: none; cursor: auto;
     transition: color 0.3s;
     position: relative;
   }
@@ -141,7 +116,7 @@
     font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
     text-transform: uppercase;
     border: none; border-radius: 100px;
-    padding: 10px 22px; cursor: none;
+    padding: 10px 22px; cursor: auto;
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease, background 0.3s;
   }
   .nav-cta:hover {
@@ -229,7 +204,7 @@
     font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
     text-transform: uppercase;
     border: none; border-radius: 4px; padding: 14px 28px;
-    cursor: none; transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: auto; transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(26,10,16,0.2); }
   .btn-outline {
@@ -237,7 +212,7 @@
     font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
     text-transform: uppercase;
     border: 1px solid rgba(74,37,53,0.25); border-radius: 4px;
-    padding: 14px 28px; cursor: none;
+    padding: 14px 28px; cursor: auto;
     transition: border-color 0.3s, color 0.3s, transform 0.3s;
   }
   .btn-outline:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-3px); }
@@ -397,7 +372,7 @@
     border: 1px solid rgba(232,121,154,0.18);
     border-radius: 10px;
     overflow: hidden; position: relative;
-    cursor: none;
+    cursor: auto;
     backdrop-filter: blur(6px);
     transition: border-color 0.5s ease, transform 0.4s cubic-bezier(0.4,0,0.2,1), background 0.4s;
   }
@@ -563,7 +538,7 @@
     display: inline-flex; align-items: center; gap: 12px;
     font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--ink2);
-    text-decoration: none; cursor: none;
+    text-decoration: none; cursor: auto;
     position: relative; width: fit-content;
   }
   .social-link::after {
@@ -981,8 +956,6 @@ let loaderDone = false;
 window._setLoaderDone = function() { loaderDone = true; };
 </script>
 
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
 <canvas id="sakura-canvas"></canvas>
 
 <!-- NAV -->
@@ -1167,22 +1140,7 @@ window._setLoaderDone = function() { loaderDone = true; };
 
 
 <script>
-/* ─── CURSOR ─── */
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
-});
-(function loopRing() {
-  rx += (mx - rx) * 0.14;
-  ry += (my - ry) * 0.14;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(loopRing);
-})();
+
 
 /* ─── PARALLAX BG TEXT ─── */
 const bgText = document.getElementById('bgText');
