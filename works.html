@@ -613,9 +613,9 @@ loop();
     var tW = Math.ceil(m.width) + 60;
     var tH = FONT_SIZE_SRC + 40;
 
-    // Second pass: draw with wave strips
+    // Canvas is exactly the text size — centering is handled by the pre element
     var wc = document.createElement('canvas');
-    wc.width = Math.max(tW + 80, window.innerWidth); wc.height = tH;
+    wc.width = tW + 80; wc.height = tH;
     var wctx = wc.getContext('2d');
     wctx.font = srcFont;
     wctx.fillStyle = '#f2b8ca';
@@ -631,13 +631,10 @@ loop();
     tctx.textBaseline = 'alphabetic';
     tctx.fillText(TEXT, 10, FONT_SIZE_SRC);
 
-    // centre the text horizontally in the canvas
-    var centreX = (wc.width - tW) / 2;
-
     // now draw in horizontal strips with sine wave offset
     for (var y = 0; y < tH; y += stripH) {
       var wave = Math.sin(time * 2.2 + y * 0.035) * waveMag;
-      var xOff = centreX + wave + mxOff;
+      var xOff = wave + mxOff + 40;
       wctx.drawImage(tmp, 0, y, tW, stripH, xOff, y, tW, stripH);
     }
 
@@ -680,8 +677,9 @@ loop();
   }
 
   function frame() {
-    var waveMag = 7 + Math.sin(time * 0.4) * 3;  // slowly breathing wave amplitude
-    var mxOff = (mouseX - 0.5) * 24;
+    var isMobile = window.innerWidth < 768;
+    var waveMag = isMobile ? 3 + Math.sin(time * 0.4) * 1 : 7 + Math.sin(time * 0.4) * 3;
+    var mxOff = (mouseX - 0.5) * (isMobile ? 8 : 24);
 
     var srcCanvas = makeTextCanvas(waveMag, mxOff);
     var ascii = toAscii(srcCanvas);
