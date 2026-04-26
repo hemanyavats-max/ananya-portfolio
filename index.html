@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ananya Gupta's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf6f4;
+    --bg2: #f5ede8;
+    --pink: #e8799a;
+    --pink-light: #f2b8ca;
+    --pink-pale: #fce8ee;
+    --pink-deep: #c45275;
+    --white: #ffffff;
+    --ink: #1a0a10;
+    --ink2: #4a2535;
+    --muted: #9e7585;
+    --glass: rgba(255,255,255,0.55);
+    --glass-border: rgba(232,121,154,0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  #cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    width: 12px; height: 12px;
+    background: var(--pink);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+    mix-blend-mode: multiply;
+  }
+  #cursor-ring {
+    position: fixed; top: 0; left: 0; z-index: 9998;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(232,121,154,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  }
+  body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 20px; height: 20px; }
+  body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
+    width: 56px; height: 56px;
+    border-color: rgba(232,121,154,0.8);
+  }
+
+  /* ─── SAKURA PETAL CANVAS ─── */
+  #sakura-canvas {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    mix-blend-mode: normal;
+  }
+  nav::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(250,246,244,0.75);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .nav-logo {
+    position: relative; z-index: 1;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; letter-spacing: 0.15em;
+    color: var(--ink);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--pink);
+    animation: pulse-nav 2s cubic-bezier(0.4,0,0.6,1) infinite;
+  }
+  @keyframes pulse-nav {
+    0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(232,121,154,0.5); }
+    50% { opacity: 0.8; transform: scale(1.1); box-shadow: 0 0 0 6px rgba(232,121,154,0); }
+  }
+  .nav-links {
+    position: relative; z-index: 1;
+    display: flex; gap: 36px;
+  }
+  .nav-links a {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--ink2);
+    text-decoration: none; cursor: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 1px; background: var(--pink);
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .nav-links a:hover { color: var(--pink-deep); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    position: relative; z-index: 1;
+    background: var(--pink); color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none; border-radius: 100px;
+    padding: 10px 22px; cursor: none;
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease, background 0.3s;
+  }
+  .nav-cta:hover {
+    transform: scale(1.05);
+    background: var(--pink-deep);
+    box-shadow: 0 8px 24px rgba(232,121,154,0.35);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    overflow: hidden;
+    perspective: 2000px;
+  }
+
+  /* BIG BG TEXT */
+  .hero-bg-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22vw; font-weight: 300;
+    letter-spacing: -0.05em; line-height: 1;
+    color: var(--pink);
+    opacity: 0.04;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+    transition: transform 0.1s linear;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 3;
+    width: 100%; max-width: 1400px; margin: 0 auto;
+    padding: 0 48px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+    padding-top: 72px;
+  }
+
+  .hero-left { display: flex; flex-direction: column; gap: 28px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px; padding: 6px 16px;
+    background: var(--glass);
+    backdrop-filter: blur(8px);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--pink-deep);
+    width: fit-content;
+    animation: fade-up 0.8s ease 0.2s both;
+  }
+
+  .hero-h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6.5vw, 88px);
+    font-weight: 300; line-height: 0.95;
+    letter-spacing: -0.03em; color: var(--ink);
+    animation: fade-up 0.8s ease 0.35s both;
+  }
+  .hero-h1 em {
+    font-style: italic; color: var(--pink);
+  }
+  .hero-h1 span.outline {
+    -webkit-text-stroke: 1px var(--ink);
+    color: transparent;
+  }
+
+  .hero-desc {
+    font-size: 15px; font-weight: 300; line-height: 1.75;
+    color: var(--muted); max-width: 400px;
+    animation: fade-up 0.8s ease 0.5s both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 14px; align-items: center;
+    animation: fade-up 0.8s ease 0.65s both;
+  }
+  .btn-main {
+    background: var(--ink); color: var(--white);
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none; border-radius: 4px; padding: 14px 28px;
+    cursor: none; transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(26,10,16,0.2); }
+  .btn-outline {
+    background: transparent; color: var(--ink2);
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(74,37,53,0.25); border-radius: 4px;
+    padding: 14px 28px; cursor: none;
+    transition: border-color 0.3s, color 0.3s, transform 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-3px); }
+
+  .hero-stat-row {
+    display: flex; gap: 32px;
+    animation: fade-up 0.8s ease 0.8s both;
+  }
+  .hero-stat { display: flex; flex-direction: column; gap: 3px; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px; font-weight: 600; line-height: 1;
+    color: var(--ink);
+  }
+  .stat-label { font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── 3D CUBE ─── */
+  .hero-right {
+    display: flex; align-items: center; justify-content: center;
+    animation: fade-in 1s ease 0.4s both;
+  }
+  .cube-scene {
+    width: 320px; height: 320px;
+    perspective: 1000px;
+  }
+  @media (max-width: 900px) {
+    .cube-scene { width: 220px; height: 220px; }
+  }
+  .cube-wrap {
+    width: 100%; height: 100%;
+    position: relative; transform-style: preserve-3d;
+    animation: rotateCubeX 22s linear infinite;
+  }
+  @keyframes rotateCubeX {
+    from { transform: rotateX(0deg) rotateY(8deg); }
+    to   { transform: rotateX(360deg) rotateY(8deg); }
+  }
+  .cube-face {
+    position: absolute;
+    width: 320px; height: 320px;
+    border: 1px solid rgba(232,121,154,0.25);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  @media (max-width: 900px) {
+    .cube-face { width: 220px; height: 220px; }
+    .face-front  { transform: translateZ(110px); }
+    .face-back   { transform: rotateX(180deg) translateZ(110px); }
+    .face-top    { transform: rotateX(90deg) translateZ(110px); }
+    .face-bottom { transform: rotateX(-90deg) translateZ(110px); }
+  }
+  .face-front  { transform: translateZ(160px); }
+  .face-back   { transform: rotateX(180deg) translateZ(160px); }
+  .face-top    { transform: rotateX(90deg) translateZ(160px); }
+  .face-bottom { transform: rotateX(-90deg) translateZ(160px); }
+
+  .face-content {
+    text-align: center; padding: 32px;
+    color: var(--ink); width: 100%;
+  }
+  .face-glyph {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 300;
+    line-height: 1; color: var(--pink);
+    margin-bottom: 10px; display: block;
+  }
+  .face-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--ink2);
+  }
+  .face-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  /* face backgrounds */
+  .face-front  { background: linear-gradient(135deg, rgba(252,232,238,0.6), rgba(255,255,255,0.4)); }
+  .face-top    { background: linear-gradient(135deg, rgba(242,184,202,0.3), rgba(255,255,255,0.35)); }
+  .face-back   { background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(245,237,232,0.6)); }
+  .face-bottom { background: linear-gradient(135deg, rgba(245,237,232,0.4), rgba(252,232,238,0.4)); }
+
+  /* ─── SCROLLING TICKER ─── */
+  .ticker-wrap {
+    position: relative; z-index: 2;
+    overflow: hidden; border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    background: var(--pink-pale);
+    padding: 12px 0;
+  }
+  .ticker-track {
+    display: flex; width: max-content;
+    animation: ticker 22s linear infinite;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .ticker-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 32px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--pink-deep);
+    white-space: nowrap;
+  }
+  .ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
+
+  /* ─── WORKS SECTION ─── */
+  .works {
+    position: relative; z-index: 2;
+    padding: 100px 48px;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .works-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 56px;
+  }
+  .works-title-group { display: flex; flex-direction: column; gap: 8px; }
+  .section-eyebrow {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--pink);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px); font-weight: 300;
+    line-height: 1; letter-spacing: -0.02em; color: var(--ink);
+  }
+  .section-title em { font-style: italic; color: var(--pink); }
+  .works-count { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 280px;
+    gap: 14px;
+  }
+  .bento-card {
+    background: var(--white);
+    border: 1px solid rgba(232,121,154,0.15);
+    border-radius: 8px;
+    overflow: hidden; position: relative;
+    cursor: none;
+    transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bento-card:hover { border-color: rgba(232,121,154,0.4); transform: translateY(-4px); }
+  .bento-card.span2 { grid-column: span 2; }
+  .bento-card.row2  { grid-row: span 2; }
+  .bento-card.featured { aspect-ratio: 16/9; }
+
+  .bento-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bento-card:hover .bento-bg { transform: scale(1.05); }
+
+  .bento-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,10,16,0.85) 0%, rgba(26,10,16,0.05) 60%);
+  }
+  .bento-body {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px;
+  }
+  .bento-idx { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+  .bento-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400; color: var(--white);
+    line-height: 1.2; position: relative; display: inline-block;
+  }
+  .bento-title::after {
+    content: ''; position: absolute; bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--pink-light);
+    box-shadow: 0 0 8px rgba(232,121,154,0.7);
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bento-card:hover .bento-title::after { width: 100%; }
+  .bento-tag {
+    display: inline-block; margin-top: 6px;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--pink-light);
+    border: 1px solid rgba(242,184,202,0.3); border-radius: 3px; padding: 3px 8px;
+  }
+
+  /* Card patterns as SVG data URIs for visual interest */
+  .card-iot { background: linear-gradient(135deg, #fce8ee 0%, #f8d7e3 40%, #f2b8ca 100%); }
+  .card-rail { background: linear-gradient(135deg, #f5ede8 0%, #fce8ee 60%, #e8c5d0 100%); }
+  .card-ml { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%); }
+  .card-iot .bento-overlay { background: linear-gradient(to top, rgba(196,82,117,0.75), rgba(232,121,154,0.1)); }
+  .card-rail .bento-overlay { background: linear-gradient(to top, rgba(26,10,16,0.7), rgba(26,10,16,0.05)); }
+  .card-ml .bento-overlay { background: linear-gradient(to top, rgba(150,60,90,0.8), rgba(232,121,154,0.05)); }
+
+  .card-pattern {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px; font-weight: 300; opacity: 0.12;
+    color: var(--pink-deep); pointer-events: none;
+    user-select: none;
+  }
+
+  /* ─── ABOUT STRIP ─── */
+  .about-strip {
+    position: relative; z-index: 2;
+    background: var(--ink); color: var(--white);
+    padding: 80px 48px;
+    overflow: hidden;
+  }
+  .about-strip-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .about-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase; color: var(--pink-light); margin-bottom: 16px; }
+  .about-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 3.5vw, 48px); font-weight: 300;
+    line-height: 1.1; letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .about-headline em { font-style: italic; color: var(--pink-light); }
+  .about-body {
+    font-size: 15px; font-weight: 300; line-height: 1.8;
+    color: rgba(255,255,255,0.55);
+  }
+  .about-skills { display: flex; flex-direction: column; gap: 16px; }
+  .skill-row { display: flex; flex-direction: column; gap: 6px; }
+  .skill-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .skill-bar { height: 2px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+  .skill-fill {
+    height: 100%; background: linear-gradient(to right, var(--pink-light), var(--pink));
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .about-strip-deco {
+    position: absolute; right: -80px; top: -80px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,121,154,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ─── SCROLL INDICATOR ─── */
+  .scroll-indicator {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    z-index: 3;
+    animation: fade-in 1s ease 1.2s both;
+  }
+  .scroll-text {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .scroll-line-wrap {
+    width: 1px; height: 48px; background: rgba(158,117,133,0.25);
+    overflow: hidden;
+  }
+  .scroll-line-inner {
+    width: 1px; height: 100%; background: var(--pink);
+    animation: scroll-drop 1.8s ease-in-out infinite;
+    transform: translateY(-100%);
+  }
+  @keyframes scroll-drop {
+    0% { transform: translateY(-100%); }
+    50% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 2;
+    background: var(--bg2);
+    padding: 64px 48px 48px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .footer-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: end;
+  }
+  .footer-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4.5vw, 60px); font-weight: 300;
+    line-height: 1; letter-spacing: -0.03em; color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .footer-headline em { font-style: italic; color: var(--pink); }
+  .footer-socials { display: flex; flex-direction: column; gap: 10px; }
+  .social-link {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink2);
+    text-decoration: none; cursor: none;
+    position: relative; width: fit-content;
+  }
+  .social-link::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 1px; background: var(--pink);
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .social-link:hover::after { width: 100%; }
+  .social-link:hover { color: var(--pink-deep); }
+  .social-arrow { transition: transform 0.3s; }
+  .social-link:hover .social-arrow { transform: translateX(4px); }
+  .footer-right { display: flex; flex-direction: column; gap: 20px; align-items: flex-end; }
+  .newsletter-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+  .newsletter-input {
+    background: transparent; border: none;
+    border-bottom: 1px solid rgba(74,37,53,0.25);
+    padding: 10px 0; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: var(--ink); outline: none; width: 100%;
+    transition: border-color 0.3s;
+  }
+  .newsletter-input:focus { border-bottom-color: var(--pink); }
+  .newsletter-input::placeholder { color: var(--muted); }
+  .copyright { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── SAKURA PETALS ─── */
+  /* rendered via canvas */
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="sakura-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-pulse"></div>
+    Ananya Gupta
+  </div>
+  <div class="nav-links">
+    <a href="#works">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-cta">Say hello →</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-text" id="bgText">桜</div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <div class="nav-pulse" style="width:6px;height:6px"></div>
+        CS (IoT) · VIT Vellore · CGPA 9.04
+      </div>
+
+      <h1 class="hero-h1">
+        Building<br>
+        tech <em>that</em><br>
+        <span class="outline">matters</span>
+      </h1>
+
+      <p class="hero-desc">
+        I'm Ananya,a Computer Science student specialising in IoT, crafting technology that translates into meaningful human experiences.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-main">View work →</button>
+        <button class="btn-outline">Download CV</button>
+      </div>
+
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <span class="stat-num">9.04</span>
+          <span class="stat-label">CGPA</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">4+</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Leadership roles</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="cube-scene">
+        <div class="cube-wrap">
+          <div class="cube-face face-front">
+            <div class="face-content">
+              <span class="face-glyph">⟡</span>
+              <div class="face-label">IoT</div>
+              <div class="face-sub">Hardware + Software</div>
+            </div>
+          </div>
+          <div class="cube-face face-back">
+            <div class="face-content">
+              <span class="face-glyph">◈</span>
+              <div class="face-label">Leadership</div>
+              <div class="face-sub">Vice Chairperson · MUN</div>
+            </div>
+          </div>
+          <div class="cube-face face-top">
+            <div class="face-content">
+              <span class="face-glyph">✦</span>
+              <div class="face-label">Achiever</div>
+              <div class="face-sub">Women Achiever 2025–26</div>
+            </div>
+          </div>
+          <div class="cube-face face-bottom">
+            <div class="face-content">
+              <span class="face-glyph">◇</span>
+              <div class="face-label">Design</div>
+              <div class="face-sub">Core · Creative</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line-wrap"><div class="scroll-line-inner"></div></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item"><div class="ticker-dot"></div>IoT Engineering</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Wireless Systems</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Full Stack Dev</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>MUN Leadership</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Women Achiever 2025</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>VIT Vellore</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>CGPA 9.04</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>IoT Engineering</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Wireless Systems</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Full Stack Dev</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>MUN Leadership</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Women Achiever 2025</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>VIT Vellore</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>CGPA 9.04</div>
+  </div>
+</div>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="works-header">
+    <div class="works-title-group">
+      <div class="section-eyebrow">02,Selected work</div>
+      <h2 class="section-title">Projects that <em>define</em> me</h2>
+    </div>
+    <span class="works-count">04 projects</span>
+  </div>
+
+  <div class="bento-grid">
+    <!-- Featured: IoT Gesture Car -->
+    <div class="bento-card span2 row2 card-iot">
+      <div class="card-pattern">✦</div>
+      <div class="bento-overlay"></div>
+      <div class="bento-body">
+        <div class="bento-idx">01,Featured</div>
+        <div class="bento-title">Wireless Gesture Car</div>
+        <div class="bento-tag">IoT · Hardware</div>
+      </div>
+    </div>
+
+    <!-- RailReserve -->
+    <div class="bento-card span2 card-rail">
+      <div class="card-pattern">◈</div>
+      <div class="bento-overlay"></div>
+      <div class="bento-body">
+        <div class="bento-idx">02</div>
+        <div class="bento-title">RailReserve System</div>
+        <div class="bento-tag">Full Stack · Railway</div>
+      </div>
+    </div>
+
+    <!-- Smart Sensor -->
+    <div class="bento-card card-ml" style="background:linear-gradient(135deg,#fde8f0,#f9cfe3,#f2a8c8)">
+      <div class="card-pattern" style="font-size:80px">◇</div>
+      <div class="bento-overlay" style="background:linear-gradient(to top,rgba(100,30,60,0.75),rgba(232,121,154,0.05))"></div>
+      <div class="bento-body">
+        <div class="bento-idx">03</div>
+        <div class="bento-title">Smart Sensor Net</div>
+        <div class="bento-tag">IoT · ML</div>
+      </div>
+    </div>
+
+    <!-- MUN Design -->
+    <div class="bento-card" style="background:linear-gradient(135deg,#f5ede8,#fce8ee)">
+      <div class="card-pattern" style="font-size:80px">⬡</div>
+      <div class="bento-overlay" style="background:linear-gradient(to top,rgba(74,37,53,0.75),rgba(232,121,154,0.05))"></div>
+      <div class="bento-body">
+        <div class="bento-idx">04</div>
+        <div class="bento-title">MUN Design</div>
+        <div class="bento-tag">Creative · Design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT STRIP -->
+<section class="about-strip" id="about">
+  <div class="about-strip-deco"></div>
+  <div class="about-strip-inner">
+    <div>
+      <div class="about-eyebrow">About me</div>
+      <h2 class="about-headline">Ananya Gupta —<br><em>engineering with intention</em></h2>
+      <p class="about-body">
+        A Computer Science (IoT) student at VIT Vellore with a CGPA of 9.04, I believe technology is most powerful when it's invisible,when it just works, beautifully. I build systems at the intersection of hardware and software, lead with empathy, and design with precision.
+      </p>
+    </div>
+    <div class="about-skills">
+      <div class="skill-row">
+        <div class="skill-label"><span>IoT & Embedded Systems</span><span>90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>Full Stack Development</span><span>82%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>Leadership & Communication</span><span>95%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>UI/UX & Design</span><span>75%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div>
+      <h2 class="footer-headline">Let's build<br>something <em>meaningful</em><br>together.</h2>
+      <div class="footer-socials">
+        <a class="social-link" href="mailto:ananya@example.com">
+          <span>ananya@example.com</span>
+          <span class="social-arrow">→</span>
+        </a>
+        <a class="social-link" href="#">
+          <span>LinkedIn</span>
+          <span class="social-arrow">→</span>
+        </a>
+        <a class="social-link" href="#">
+          <span>GitHub</span>
+          <span class="social-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="newsletter-form">
+        <input class="newsletter-input" type="email" placeholder="your@email.com,let's connect"/>
+        <button class="btn-main" style="align-self:flex-end">Send →</button>
+      </div>
+      <div class="copyright">© 2025 Ananya Gupta · CS (IoT) · VIT Vellore</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── CURSOR ─── */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+(function loopRing() {
+  rx += (mx - rx) * 0.14;
+  ry += (my - ry) * 0.14;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(loopRing);
+})();
+
+/* ─── PARALLAX BG TEXT ─── */
+const bgText = document.getElementById('bgText');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  bgText.style.transform = `translate(-50%, calc(-50% + ${y * 0.3}px)) scale(${1 + y * 0.0002})`;
+});
+
+/* ─── SAKURA PETALS ─── */
+const canvas = document.getElementById('sakura-canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const COLORS = ['rgba(242,184,202,', 'rgba(232,121,154,', 'rgba(252,232,238,', 'rgba(248,215,228,'];
+const NUM = 38;
+
+class Petal {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x = Math.random() * W;
+    this.y = init ? Math.random() * H : -20;
+    this.r = 4 + Math.random() * 7;
+    this.speed = 0.4 + Math.random() * 0.7;
+    this.drift = (Math.random() - 0.5) * 0.5;
+    this.rot = Math.random() * Math.PI * 2;
+    this.rotSpeed = (Math.random() - 0.5) * 0.02;
+    this.alpha = 0.25 + Math.random() * 0.5;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.wave = Math.random() * Math.PI * 2;
+    this.waveAmp = 0.3 + Math.random() * 0.5;
+  }
+  update() {
+    this.wave += 0.018;
+    this.x += this.drift + Math.sin(this.wave) * this.waveAmp;
+    this.y += this.speed;
+    this.rot += this.rotSpeed;
+    if (this.y > H + 20) this.reset(false);
+  }
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    ctx.globalAlpha = this.alpha;
+    // petal shape
+    ctx.beginPath();
+    ctx.fillStyle = this.color + '1)';
+    ctx.ellipse(0, 0, this.r, this.r * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // highlight
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.ellipse(-this.r * 0.15, -this.r * 0.1, this.r * 0.35, this.r * 0.2, -0.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+const petals = Array.from({length: NUM}, () => new Petal());
+function animatePetals() {
+  ctx.clearRect(0, 0, W, H);
+  petals.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animatePetals);
+}
+animatePetals();
+</script>
+</body>
+</html>
