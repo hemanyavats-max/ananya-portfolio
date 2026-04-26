@@ -58,7 +58,7 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
 #gl-canvas:active{cursor:grabbing}
 
 /* PROJECT STRIP */
-.project-strip{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:56px 56px 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;animation:fade-up .9s ease .65s both}
+.project-strip{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:56px 56px 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;grid-auto-rows:auto;animation:fade-up .9s ease .65s both}
 .proj{padding:26px 24px 26px 0;border-top:1px solid rgba(232,121,154,.1);transition:border-color .4s;cursor:none}
 .proj:hover{border-color:rgba(232,121,154,.42)}
 .proj-num{font-size:9px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,184,202,.28);margin-bottom:10px}
@@ -132,6 +132,24 @@ nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);bac
     <div class="proj-tags"><span class="ptag">Creative</span><span class="ptag">Design</span></div>
     <div class="proj-desc">Visual identity and design system for VITMUN, South India's prominent Model UN conference.</div>
   </div>
+  <a class="proj" href="https://ananyagpt1105.github.io/vit-campus-news-portal/" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
+    <div class="proj-num">05 · <span style="font-size:9px;letter-spacing:.15em;color:rgba(242,184,202,0.5);">View Project ↗</span></div>
+    <div class="proj-name">VIT Campus News Portal</div>
+    <div class="proj-tags"><span class="ptag">Web</span><span class="ptag">Portal</span></div>
+    <div class="proj-desc">Campus news portal built for VIT students with categorised articles and a clean reading experience.</div>
+  </a>
+  <a class="proj" href="https://ananyagpt1105.github.io/restaurant-menu-spice-symphony/" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
+    <div class="proj-num">06 · <span style="font-size:9px;letter-spacing:.15em;color:rgba(242,184,202,0.5);">View Project ↗</span></div>
+    <div class="proj-name">Spice Symphony Menu</div>
+    <div class="proj-tags"><span class="ptag">Web</span><span class="ptag">Design</span></div>
+    <div class="proj-desc">Interactive restaurant menu site with dish categories, imagery and a warm visual identity.</div>
+  </a>
+  <a class="proj" href="https://ananyagpt1105.github.io/html-blog-site/" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
+    <div class="proj-num">07 · <span style="font-size:9px;letter-spacing:.15em;color:rgba(242,184,202,0.5);">View Project ↗</span></div>
+    <div class="proj-name">Beginner Blog</div>
+    <div class="proj-tags"><span class="ptag">HTML</span><span class="ptag">CSS</span></div>
+    <div class="proj-desc">A clean personal blog built from scratch with pure HTML and CSS as a foundational web project.</div>
+  </a>
 </div>
 
 <div class="bottom-nav">
@@ -157,6 +175,9 @@ const CARDS = [
   {label:'RailReserve System',   sub:'Full Stack',        glyph:'◈', c1:'#3a0818',c2:'#1a030a'},
   {label:'Smart Sensor Net',     sub:'IoT · ML',          glyph:'◇', c1:'#480a30',c2:'#22041a'},
   {label:'MUN Design',           sub:'Creative · Design', glyph:'⬡', c1:'#2d0614',c2:'#180308'},
+  {label:'VIT Campus News',      sub:'Web · Portal',      glyph:'✶', c1:'#3a1040',c2:'#180820'},
+  {label:'Spice Symphony',       sub:'Web · Design',      glyph:'◉', c1:'#501828',c2:'#220810'},
+  {label:'Beginner Blog',        sub:'HTML · CSS',        glyph:'◌', c1:'#1e1040',c2:'#0c0820'},
 ];
 // triple for seamless looping
 const ITEMS = [...CARDS,...CARDS,...CARDS,...CARDS];
@@ -416,7 +437,15 @@ window.addEventListener('touchmove',e=>{if(!isDown)return;dragDist=Math.abs(e.to
 window.addEventListener('touchend',()=>{isDown=false;snap()});
 
 // ── Card click: open RailReserve when its card is centred ──
-const CARD_LINKS = [null, 'https://ananyagpt1105.github.io/railreserve/login.html', null, null];
+const CARD_LINKS = [
+  null,
+  'https://ananyagpt1105.github.io/railreserve/login.html',
+  null,
+  null,
+  'https://ananyagpt1105.github.io/vit-campus-news-portal/',
+  'https://ananyagpt1105.github.io/restaurant-menu-spice-symphony/',
+  'https://ananyagpt1105.github.io/html-blog-site/',
+];
 canvas.addEventListener('click', ()=>{
   if(dragDist > 6) return;
   let best=-1, bestDist=Infinity;
