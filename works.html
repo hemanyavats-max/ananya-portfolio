@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ananya Gupta - Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#e8799a;--pink-light:#f2b8ca;--pink-deep:#c45275;
+  --ink:#1a0a10;--muted:#9e7585;
+}
+html{scroll-behavior:smooth}
+body{background:#0d0508;font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;min-height:100vh}
+
+/* CURSOR */
+#cursor{position:fixed;top:0;left:0;z-index:9999;width:12px;height:12px;background:var(--pink);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;top:0;left:0;z-index:9998;width:36px;height:36px;border:1px solid rgba(232,121,154,.5);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:20px;height:20px}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;border-color:rgba(232,121,154,.8)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px}
+nav::before{content:'';position:absolute;inset:0;background:rgba(13,5,8,.75);backdrop-filter:blur(20px);border-bottom:1px solid rgba(232,121,154,.12)}
+.nav-logo{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:.15em;color:rgba(255,255,255,.9);display:flex;align-items:center;gap:10px;text-decoration:none;cursor:none}
+.nav-pulse{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:pulse-nav 2s cubic-bezier(.4,0,.6,1) infinite}
+@keyframes pulse-nav{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(232,121,154,.5)}50%{opacity:.8;transform:scale(1.1);box-shadow:0 0 0 6px rgba(232,121,154,0)}}
+.nav-back{position:relative;z-index:1;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;cursor:none;transition:color .3s;display:flex;align-items:center;gap:8px}
+.nav-back:hover{color:var(--pink-light)}
+
+/* AMBIENT */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none}
+.ab{position:absolute;border-radius:50%;filter:blur(130px);animation:drift 20s ease-in-out infinite alternate}
+.ab1{width:700px;height:700px;background:var(--pink);opacity:.07;top:-300px;left:-200px}
+.ab2{width:500px;height:500px;background:var(--pink-light);opacity:.04;bottom:-100px;right:5%;animation-delay:-9s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,30px) scale(1.06)}}
+
+/* PAGE HEADER */
+.page-header{position:relative;z-index:10;padding:118px 56px 0;max-width:1400px;margin:0 auto;animation:fade-up .9s cubic-bezier(.22,1,.36,1) .1s both}
+.page-eyebrow{font-size:10px;font-weight:600;letter-spacing:.4em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.page-eyebrow::before{content:'';display:inline-block;width:32px;height:1px;background:var(--pink);opacity:.5}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,96px);font-weight:300;line-height:.95;letter-spacing:-.03em;color:#fff;margin-bottom:18px}
+.page-title em{font-style:italic;color:var(--pink-light)}
+.page-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,.32);letter-spacing:.04em;max-width:380px;line-height:1.75}
+
+/* DRAG HINT */
+.drag-hint{position:relative;z-index:10;display:flex;align-items:center;gap:10px;padding:28px 56px 0;max-width:1400px;margin:0 auto;animation:fade-up .9s cubic-bezier(.22,1,.36,1) .35s both}
+.dh-line{width:40px;height:1px;background:linear-gradient(to right,var(--pink),transparent)}
+.dh-text{font-size:10px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.22)}
+.dh-arrow{font-size:14px;color:rgba(232,121,154,.4);animation:nudge 2s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+
+/* GALLERY CANVAS WRAPPER */
+.gallery-wrap{position:relative;width:100%;height:68vh;margin-top:36px;animation:fade-in 1s ease .5s both}
+#gl-canvas{display:block;width:100%;height:100%;cursor:grab}
+#gl-canvas:active{cursor:grabbing}
+
+/* PROJECT STRIP */
+.project-strip{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:56px 56px 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;animation:fade-up .9s ease .65s both}
+.proj{padding:26px 24px 26px 0;border-top:1px solid rgba(232,121,154,.1);transition:border-color .4s;cursor:none}
+.proj:hover{border-color:rgba(232,121,154,.42)}
+.proj-num{font-size:9px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,184,202,.28);margin-bottom:10px}
+.proj-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:#fff;line-height:1.2;margin-bottom:8px;transition:color .3s}
+.proj:hover .proj-name{color:var(--pink-light)}
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ptag{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--pink-light);border:1px solid rgba(242,184,202,.18);border-radius:3px;padding:2px 7px}
+.proj-desc{font-size:12px;font-weight:300;line-height:1.75;color:rgba(255,255,255,.28)}
+
+/* BOTTOM */
+.bottom-nav{border-top:1px solid rgba(232,121,154,.08);padding:30px 56px;display:flex;justify-content:space-between;align-items:center}
+.bn-left{font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.18)}
+.back-btn{display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(232,121,154,.28);border-radius:100px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,184,202,.75);text-decoration:none;cursor:none;transition:border-color .3s,color .3s,box-shadow .3s}
+.back-btn:hover{border-color:rgba(232,121,154,.65);color:#fff;box-shadow:0 0 18px rgba(232,121,154,.12)}
+
+@keyframes fade-up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="ambient"><div class="ab ab1"></div><div class="ab ab2"></div></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a class="nav-logo" href="ananya-sakura-portfolio.html">
+    <div class="nav-pulse"></div>Ananya Gupta
+  </a>
+  <a class="nav-back" href="ananya-sakura-portfolio.html">&#8592; Back</a>
+</nav>
+
+<div class="page-header">
+  <div class="page-eyebrow">Selected work</div>
+  <h1 class="page-title">Projects that <em>define</em> me</h1>
+  <p class="page-sub">From hardware that moves to interfaces that breathe - things I've built with intention.</p>
+</div>
+
+<div class="drag-hint">
+  <div class="dh-line"></div>
+  <span class="dh-text">Drag or scroll to explore</span>
+  <span class="dh-arrow">&#8594;</span>
+</div>
+
+<div class="gallery-wrap">
+  <canvas id="gl-canvas"></canvas>
+</div>
+
+<div class="project-strip">
+  <div class="proj">
+    <div class="proj-num">01 - Featured</div>
+    <div class="proj-name">Wireless Gesture Car</div>
+    <div class="proj-tags"><span class="ptag">IoT</span><span class="ptag">Hardware</span></div>
+    <div class="proj-desc">Dual ESP32 hand-gesture navigation using MPU6050 tilt input with ESP-NOW low-latency protocol.</div>
+  </div>
+  <a class="proj" href="https://ananyagpt1105.github.io/railreserve/login.html" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
+    <div class="proj-num">02 · <span style="font-size:9px;letter-spacing:.15em;color:rgba(242,184,202,0.5);">View Project ↗</span></div>
+    <div class="proj-name">RailReserve System</div>
+    <div class="proj-tags"><span class="ptag">Full Stack</span><span class="ptag">Railway</span></div>
+    <div class="proj-desc">Multi-page reservation site with train search, PNR status and multi-step booking flow across 8 pages.</div>
+  </a>
+  <div class="proj">
+    <div class="proj-num">03</div>
+    <div class="proj-name">Smart Sensor Net</div>
+    <div class="proj-tags"><span class="ptag">IoT</span><span class="ptag">ML</span></div>
+    <div class="proj-desc">Distributed sensor network with machine learning inference at the edge for real-time decisions.</div>
+  </div>
+  <div class="proj">
+    <div class="proj-num">04</div>
+    <div class="proj-name">MUN Design</div>
+    <div class="proj-tags"><span class="ptag">Creative</span><span class="ptag">Design</span></div>
+    <div class="proj-desc">Visual identity and design system for VITMUN, South India's prominent Model UN conference.</div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <span class="bn-left">Ananya Gupta &middot; CS (IoT) &middot; VIT Vellore</span>
+  <a class="back-btn" href="ananya-sakura-portfolio.html">&#8592; Return Home</a>
+</div>
+
+<!-- CURSOR -->
+<script>
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function L(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(L)})();
+</script>
+
+<!-- WEBGL CIRCULAR GALLERY - pure WebGL, no dependencies -->
+<script>
+(function(){
+
+// ── Card data ──────────────────────────────────────────────
+const CARDS = [
+  {label:'Wireless Gesture Car', sub:'IoT · Hardware',   glyph:'✦', c1:'#5a0a20',c2:'#2a050f'},
+  {label:'RailReserve System',   sub:'Full Stack',        glyph:'◈', c1:'#3a0818',c2:'#1a030a'},
+  {label:'Smart Sensor Net',     sub:'IoT · ML',          glyph:'◇', c1:'#480a30',c2:'#22041a'},
+  {label:'MUN Design',           sub:'Creative · Design', glyph:'⬡', c1:'#2d0614',c2:'#180308'},
+];
+// triple for seamless looping
+const ITEMS = [...CARDS,...CARDS,...CARDS,...CARDS];
+const N = ITEMS.length;
+
+// ── Config ─────────────────────────────────────────────────
+const BEND       = 3.0;   // curve depth
+const EASE       = 0.055; // inertia
+const SPD        = 2.4;   // scroll sensitivity
+const CARD_W_PX  = 700;
+const CARD_H_PX  = 900;
+const PADDING_PX = 60;    // gap between cards in pixels
+
+// ── Lerp ───────────────────────────────────────────────────
+function lerp(a,b,t){return a+(b-a)*t}
+
+// ── Build card textures on a 2D canvas ────────────────────
+function makeCardTexture(item){
+  const W=CARD_W_PX, H=CARD_H_PX;
+  const c=document.createElement('canvas');
+  c.width=W; c.height=H;
+  const ctx=c.getContext('2d');
+
+  // dark gradient bg
+  const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,item.c1); g.addColorStop(1,item.c2);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  // subtle grid
+  ctx.strokeStyle='rgba(242,184,202,0.04)'; ctx.lineWidth=1;
+  for(let x=0;x<W;x+=55){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(let y=0;y<H;y+=55){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+  // large watermark glyph
+  ctx.save();
+  ctx.font='300 220px "Cormorant Garamond",Georgia,serif';
+  ctx.fillStyle='rgba(242,184,202,0.07)';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(item.glyph, W*0.74, H*0.38);
+  ctx.restore();
+
+  // pink horizontal rule
+  ctx.strokeStyle='rgba(232,121,154,0.32)'; ctx.lineWidth=1;
+  const ry=H*0.62;
+  ctx.beginPath(); ctx.moveTo(52,ry); ctx.lineTo(W-52,ry); ctx.stroke();
+
+  // small category label above rule
+  ctx.save();
+  ctx.font='600 17px "DM Sans",Arial,sans-serif';
+  ctx.fillStyle='rgba(242,184,202,0.42)';
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+  ctx.fillText(item.sub.toUpperCase(), 52, ry-16);
+  ctx.restore();
+
+  // project title below rule
+  ctx.save();
+  ctx.font='300 58px "Cormorant Garamond",Georgia,serif';
+  ctx.fillStyle='rgba(255,255,255,0.92)';
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+  ctx.fillText(item.label, 52, ry+70);
+  ctx.restore();
+
+  // pink accent dot
+  ctx.beginPath();
+  ctx.arc(52, ry+86, 3.5, 0, Math.PI*2);
+  ctx.fillStyle='rgba(232,121,154,0.65)'; ctx.fill();
+
+  // glowing border
+  const bd=ctx.createLinearGradient(0,0,W,H);
+  bd.addColorStop(0,'rgba(232,121,154,0.30)');
+  bd.addColorStop(0.5,'rgba(242,184,202,0.06)');
+  bd.addColorStop(1,'rgba(232,121,154,0.24)');
+  ctx.strokeStyle=bd; ctx.lineWidth=2;
+  ctx.strokeRect(1,1,W-2,H-2);
+
+  return c;
+}
+
+// ── WebGL boilerplate ──────────────────────────────────────
+const canvas = document.getElementById('gl-canvas');
+const gl = canvas.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:false});
+if(!gl){console.warn('WebGL not supported');return}
+gl.clearColor(0,0,0,0);
+gl.enable(gl.BLEND);
+gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+
+// ── Shaders ────────────────────────────────────────────────
+const VS = `
+  attribute vec2 aPos;
+  attribute vec2 aUv;
+  uniform mat4 uMVP;
+  uniform float uTime;
+  uniform float uSpeed;
+  varying vec2 vUv;
+  void main(){
+    vUv = aUv;
+    vec3 p = vec3(aPos, 0.0);
+    // ripple on scroll
+    float wave = sin(aPos.x*3.5 + uTime)*1.1 + cos(aPos.y*2.0 + uTime)*0.8;
+    p.z = wave * (0.03 + abs(uSpeed)*0.25);
+    gl_Position = uMVP * vec4(p, 1.0);
+  }
+`;
+const FS = `
+  precision highp float;
+  uniform sampler2D uTex;
+  uniform float uBR;
+  varying vec2 vUv;
+  float rSDF(vec2 p,vec2 b,float r){
+    vec2 d=abs(p)-b;
+    return length(max(d,0.0))+min(max(d.x,d.y),0.0)-r;
+  }
+  void main(){
+    vec4 col = texture2D(uTex, vUv);
+    float d = rSDF(vUv-0.5, vec2(0.5-uBR), uBR);
+    float a = 1.0 - smoothstep(-0.003,0.003,d);
+    gl_FragColor = vec4(col.rgb, col.a * a);
+  }
+`;
+
+function compileShader(type,src){
+  const s=gl.createShader(type);
+  gl.shaderSource(s,src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));
+  return s;
+}
+function makeProgram(vs,fs){
+  const p=gl.createProgram();
+  gl.attachShader(p,compileShader(gl.VERTEX_SHADER,vs));
+  gl.attachShader(p,compileShader(gl.FRAGMENT_SHADER,fs));
+  gl.linkProgram(p);
+  return p;
+}
+
+const prog = makeProgram(VS,FS);
+gl.useProgram(prog);
+
+const aPos  = gl.getAttribLocation(prog,'aPos');
+const aUv   = gl.getAttribLocation(prog,'aUv');
+const uMVP  = gl.getUniformLocation(prog,'uMVP');
+const uTime = gl.getUniformLocation(prog,'uTime');
+const uSpeed= gl.getUniformLocation(prog,'uSpeed');
+const uTex  = gl.getUniformLocation(prog,'uTex');
+const uBR   = gl.getUniformLocation(prog,'uBR');
+
+// ── Geometry: subdivided quad ──────────────────────────────
+// More segments = smoother bend
+const SEGS_X=80, SEGS_Y=50;
+function buildQuadMesh(w,h,sx,sy){
+  const verts=[],uvs=[],idx=[];
+  for(let j=0;j<=sy;j++) for(let i=0;i<=sx;i++){
+    verts.push(-w/2+w*i/sx, -h/2+h*j/sy);
+    uvs.push(i/sx, 1-j/sy);
+  }
+  for(let j=0;j<sy;j++) for(let i=0;i<sx;i++){
+    const a=j*(sx+1)+i, b=a+1, c=a+(sx+1), d=c+1;
+    idx.push(a,b,c, b,d,c);
+  }
+  return {verts:new Float32Array(verts),uvs:new Float32Array(uvs),idx:new Uint16Array(idx)};
+}
+
+const mesh = buildQuadMesh(1,1,SEGS_X,SEGS_Y);
+const vBuf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,vBuf); gl.bufferData(gl.ARRAY_BUFFER,mesh.verts,gl.STATIC_DRAW);
+const uBuf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,uBuf); gl.bufferData(gl.ARRAY_BUFFER,mesh.uvs,gl.STATIC_DRAW);
+const iBuf=gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,iBuf); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,mesh.idx,gl.STATIC_DRAW);
+
+// ── Textures ───────────────────────────────────────────────
+const textures = ITEMS.map(item=>{
+  const cvs = makeCardTexture(item);
+  const t = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D,t);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,cvs);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  return t;
+});
+
+// ── Matrix helpers (column-major) ─────────────────────────
+function mat4(){return new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1])}
+function perspective(fov,aspect,near,far){
+  const f=1/Math.tan(fov/2), nf=1/(near-far);
+  const m=mat4();
+  m[0]=f/aspect; m[5]=f; m[10]=(far+near)*nf; m[11]=-1;
+  m[14]=2*far*near*nf; m[15]=0;
+  return m;
+}
+function translate(x,y,z){
+  const m=mat4(); m[12]=x; m[13]=y; m[14]=z; return m;
+}
+function rotateZ(a){
+  const m=mat4(),c=Math.cos(a),s=Math.sin(a);
+  m[0]=c; m[1]=s; m[4]=-s; m[5]=c; return m;
+}
+function scale(sx,sy,sz){
+  const m=mat4(); m[0]=sx; m[5]=sy; m[10]=sz; return m;
+}
+function mul(a,b){
+  const r=mat4();
+  for(let i=0;i<4;i++) for(let j=0;j<4;j++){
+    let s=0; for(let k=0;k<4;k++) s+=a[i+k*4]*b[k+j*4];
+    r[i+j*4]=s;
+  }
+  return r;
+}
+
+// ── Camera / viewport ─────────────────────────────────────
+let W,H,vpW,vpH,cardW,cardH,cardPad,cardStep,totalW;
+const CAM_Z=20, FOV=45*Math.PI/180;
+
+function resize(){
+  W=canvas.clientWidth; H=canvas.clientHeight;
+  canvas.width=W*Math.min(devicePixelRatio,2);
+  canvas.height=H*Math.min(devicePixelRatio,2);
+  gl.viewport(0,0,canvas.width,canvas.height);
+  // viewport in world units
+  vpH = 2*Math.tan(FOV/2)*CAM_Z;
+  vpW = vpH*(W/H);
+  // card size matching the original component's scale formula
+  const s=H/1500;
+  cardH = vpH*(900*s)/H;
+  cardW = vpW*(700*s)/W;
+  cardPad = vpW*(PADDING_PX/W)*0.4; // gap in world units
+  cardStep = cardW + cardPad;
+  totalW = cardStep * N;
+}
+resize();
+window.addEventListener('resize',resize);
+
+const proj = ()=>perspective(FOV, W/H, 0.1, 100);
+const view = ()=>translate(0,0,-CAM_Z);
+
+// ── Scroll state ───────────────────────────────────────────
+const scroll={cur:0,tgt:0,last:0,ease:EASE};
+let isDown=false, startX=0, startScroll=0;
+let time=0, speed=0;
+
+function deb(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+function snap(){
+  const i=Math.round(Math.abs(scroll.tgt)/cardStep);
+  scroll.tgt=scroll.tgt<0?-(cardStep*i):cardStep*i;
+}
+const snapD=deb(snap,200);
+
+window.addEventListener('wheel',e=>{
+  scroll.tgt+=(e.deltaY>0?SPD:-SPD)*0.2;
+  snapD();
+},{passive:true});
+
+let dragDist=0;
+canvas.addEventListener('mousedown',e=>{isDown=true;startX=e.clientX;startScroll=scroll.cur;dragDist=0;});
+window.addEventListener('mousemove',e=>{if(!isDown)return;dragDist=Math.abs(e.clientX-startX);scroll.tgt=startScroll+(startX-e.clientX)/W*vpW*SPD*1.2});
+window.addEventListener('mouseup',()=>{isDown=false;snap()});
+canvas.addEventListener('touchstart',e=>{isDown=true;startX=e.touches[0].clientX;startScroll=scroll.cur;dragDist=0;},{passive:true});
+window.addEventListener('touchmove',e=>{if(!isDown)return;dragDist=Math.abs(e.touches[0].clientX-startX);scroll.tgt=startScroll+(startX-e.touches[0].clientX)/W*vpW*SPD*1.2},{passive:true});
+window.addEventListener('touchend',()=>{isDown=false;snap()});
+
+// ── Card click: open RailReserve when its card is centred ──
+const CARD_LINKS = [null, 'https://ananyagpt1105.github.io/railreserve/login.html', null, null];
+canvas.addEventListener('click', ()=>{
+  if(dragDist > 6) return;
+  let best=-1, bestDist=Infinity;
+  for(let i=0;i<N;i++){
+    let x=i*cardStep-scroll.cur;
+    while(x> totalW/2) x-=totalW;
+    while(x<-totalW/2) x+=totalW;
+    const d=Math.abs(x);
+    if(d<bestDist){bestDist=d;best=i;}
+  }
+  const url=CARD_LINKS[best % CARDS.length];
+  if(url) window.open(url,'_blank','noopener');
+});
+
+// ── Draw ───────────────────────────────────────────────────
+function drawCard(i, scrollPos){
+  const baseX = i*cardStep - scrollPos;
+  // infinite loop wrapping
+  let x=baseX;
+  // clamp to closest wrap
+  while(x > totalW/2)  x -= totalW;
+  while(x < -totalW/2) x += totalW;
+
+  // circular bend: place card on an arc
+  const H2=vpW/2;
+  let posY=0, rotZ=0;
+  if(BEND!==0){
+    const B=Math.abs(BEND);
+    const R=(H2*H2+B*B)/(2*B);
+    const ex=Math.min(Math.abs(x),H2);
+    const arc=R-Math.sqrt(Math.max(0,R*R-ex*ex));
+    posY = BEND>0?-arc:arc;
+    rotZ = (BEND>0?-1:1)*Math.sign(x)*Math.asin(Math.min(ex/R,1));
+  }
+
+  // MVP
+  const S  = scale(cardW, cardH, 1);
+  const Rz = rotateZ(rotZ);
+  const T  = translate(x, posY, 0);
+  const V  = view();
+  const P  = proj();
+  const model = mul(T, mul(Rz, S));
+  const mvp   = mul(P, mul(V, model));
+  gl.uniformMatrix4fv(uMVP, false, mvp);
+  gl.uniform1f(uTime, time);
+  gl.uniform1f(uSpeed, speed);
+  gl.uniform1f(uBR, 0.04);
+
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, textures[i]);
+  gl.uniform1i(uTex, 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, vBuf);
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, uBuf);
+  gl.enableVertexAttribArray(aUv);
+  gl.vertexAttribPointer(aUv,2,gl.FLOAT,false,0,0);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuf);
+  gl.drawElements(gl.TRIANGLES, mesh.idx.length, gl.UNSIGNED_SHORT, 0);
+}
+
+// ── Render loop ────────────────────────────────────────────
+function loop(){
+  scroll.cur=lerp(scroll.cur,scroll.tgt,scroll.ease);
+  speed=scroll.cur-scroll.last;
+  time+=0.04;
+
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.useProgram(prog);
+
+  for(let i=0;i<N;i++) drawCard(i, scroll.cur);
+
+  scroll.last=scroll.cur;
+  requestAnimationFrame(loop);
+}
+loop();
+
+})();
+</script>
+
+
+<!-- ─── ASCII TEXT BACKGROUND ─── -->
+<div id="ascii-bg" style="position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;opacity:0.28;perspective:800px;"></div>
+<script>
+(function(){
+  var container = document.getElementById('ascii-bg');
+
+  // charset — no backtick, defined as regular string concatenation
+  var CHARSET = " .'\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+
+  var TEXT = 'WORKS';
+  var FONT_SIZE_SRC = 240;   // source text px size
+  var ASCII_FONT_PX = 9;     // rendered ascii char size
+  var time = 0;
+  var mouseX = 0.5, mouseY = 0.5;
+
+  document.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX / window.innerWidth;
+    mouseY = e.clientY / window.innerHeight;
+  }, { passive: true });
+
+  // Build <pre> for ASCII output
+  var pre = document.createElement('pre');
+  pre.style.position = 'absolute';
+  pre.style.left = '50%';
+  pre.style.top = '50%';
+  pre.style.transform = 'translate(-50%,-50%)';
+  pre.style.fontFamily = '"Courier New", Courier, monospace';
+  pre.style.fontSize = ASCII_FONT_PX + 'px';
+  pre.style.lineHeight = '1em';
+  pre.style.margin = '0';
+  pre.style.padding = '0';
+  pre.style.whiteSpace = 'pre';
+  pre.style.color = '#f2b8ca';
+  pre.style.userSelect = 'none';
+  pre.style.pointerEvents = 'none';
+  pre.style.letterSpacing = '0.05em';
+  container.appendChild(pre);
+
+  // Draw source text onto an offscreen canvas
+  function makeTextCanvas(waveMag, mxOff) {
+    // First pass: measure
+    var mc = document.createElement('canvas');
+    var mctx = mc.getContext('2d');
+    var srcFont = '700 ' + FONT_SIZE_SRC + 'px "Cormorant Garamond", Georgia, serif';
+    mctx.font = srcFont;
+    var m = mctx.measureText(TEXT);
+    var tW = Math.ceil(m.width) + 60;
+    var tH = FONT_SIZE_SRC + 40;
+
+    // Second pass: draw with wave strips
+    var wc = document.createElement('canvas');
+    wc.width = tW + 80; wc.height = tH;
+    var wctx = wc.getContext('2d');
+    wctx.font = srcFont;
+    wctx.fillStyle = '#f2b8ca';
+    wctx.textBaseline = 'alphabetic';
+
+    var stripH = 3;
+    // draw base text to a temp canvas first
+    var tmp = document.createElement('canvas');
+    tmp.width = tW; tmp.height = tH;
+    var tctx = tmp.getContext('2d');
+    tctx.font = srcFont;
+    tctx.fillStyle = '#f2b8ca';
+    tctx.textBaseline = 'alphabetic';
+    tctx.fillText(TEXT, 10, FONT_SIZE_SRC);
+
+    // now draw in horizontal strips with sine wave offset
+    for (var y = 0; y < tH; y += stripH) {
+      var wave = Math.sin(time * 2.2 + y * 0.035) * waveMag;
+      var xOff = wave + mxOff + 40; // 40 = centre padding
+      wctx.drawImage(tmp, 0, y, tW, stripH, xOff, y, tW, stripH);
+    }
+
+    return wc;
+  }
+
+  // Convert rendered canvas to ASCII string
+  function toAscii(srcCanvas) {
+    var W = srcCanvas.width, H = srcCanvas.height;
+    // measure char size
+    var mc = document.createElement('canvas');
+    var mctx = mc.getContext('2d');
+    mctx.font = ASCII_FONT_PX + 'px "Courier New", Courier, monospace';
+    var charW = Math.ceil(mctx.measureText('M').width);
+    var cols = Math.floor(W / charW);
+    var rows = Math.floor(H / ASCII_FONT_PX);
+
+    // downsample
+    var tmp = document.createElement('canvas');
+    tmp.width = cols; tmp.height = rows;
+    var tctx = tmp.getContext('2d');
+    tctx.drawImage(srcCanvas, 0, 0, cols, rows);
+    var px = tctx.getImageData(0, 0, cols, rows).data;
+
+    var str = '';
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        var i = (y * cols + x) * 4;
+        var a = px[i + 3];
+        if (a < 8) { str += ' '; continue; }
+        var gray = (0.299 * px[i] + 0.587 * px[i+1] + 0.114 * px[i+2]) / 255;
+        // invert: bright pixels = dense chars
+        var idx = Math.floor(gray * (CHARSET.length - 1));
+        idx = Math.max(0, Math.min(CHARSET.length - 1, idx));
+        str += CHARSET[idx];
+      }
+      str += '\n';
+    }
+    return str;
+  }
+
+  function frame() {
+    var waveMag = 7 + Math.sin(time * 0.4) * 3;  // slowly breathing wave amplitude
+    var mxOff = (mouseX - 0.5) * 24;
+
+    var srcCanvas = makeTextCanvas(waveMag, mxOff);
+    var ascii = toAscii(srcCanvas);
+    pre.textContent = ascii;
+
+    // mouse-driven 3D tilt
+    var rotX = (mouseY - 0.5) * -10;
+    var rotY = (mouseX - 0.5) * 18;
+    pre.style.transform = 'translate(-50%,-50%) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+
+    time += 0.022;
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+})();
+</script>
+
+</body>
+</html>
