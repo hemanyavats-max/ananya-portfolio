@@ -487,6 +487,37 @@
     pointer-events: none;
   }
 
+  /* ─── EDUCATION BLOCK ─── */
+  .about-education { display: flex; flex-direction: column; gap: 0; }
+  .edu-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase; color: var(--pink-light); margin-bottom: 20px; }
+  .edu-item {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; padding: 18px 0;
+  }
+  .edu-school {
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,0.9); margin-bottom: 4px;
+  }
+  .edu-degree {
+    font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+  .edu-meta {
+    text-align: right; flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .edu-dates {
+    font-size: 12px; font-weight: 300; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.5);
+  }
+  .edu-grade {
+    font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.65);
+  }
+  .edu-grade strong { font-weight: 600; color: var(--pink-light); }
+  .edu-divider { height: 1px; background: rgba(255,255,255,0.08); }
+
   /* ─── SCROLL INDICATOR ─── */
   .scroll-indicator {
     position: absolute; bottom: 36px; left: 50%;
@@ -575,6 +606,81 @@
 
   /* ─── SAKURA PETALS ─── */
   /* rendered via canvas */
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav { padding: 0 20px; height: 60px; }
+    .nav-links { display: none; }
+    .nav-cta { font-size: 11px; padding: 8px 16px; }
+
+    /* HERO */
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 0 20px;
+      padding-top: 80px;
+      padding-bottom: 60px;
+      text-align: center;
+    }
+    .hero { overflow: visible; }
+    .hero-tag { margin: 0 auto; }
+    .hero-desc { max-width: 100%; margin: 0 auto; }
+    .hero-actions { justify-content: center; flex-wrap: wrap; }
+    .hero-stat-row { justify-content: center; gap: 24px; }
+    .hero-right { display: flex; justify-content: center; margin-top: 24px; margin-bottom: 16px; }
+    .cube-scene { width: 180px; height: 180px; margin: 0 auto; perspective: 600px; overflow: visible; }
+    .cube-wrap { width: 180px; height: 180px; }
+    .cube-face { width: 180px; height: 180px; }
+    .face-front  { transform: translateZ(90px); }
+    .face-back   { transform: rotateX(180deg) translateZ(90px); }
+    .face-top    { transform: rotateX(90deg) translateZ(90px); }
+    .face-bottom { transform: rotateX(-90deg) translateZ(90px); }
+    .face-glyph { font-size: 36px; }
+    .face-label { font-size: 13px; }
+    .face-sub { font-size: 10px; }
+    .face-content { padding: 16px; }
+    .hero-bg-text { font-size: 35vw; }
+
+    /* SCROLL INDICATOR */
+    .scroll-indicator { bottom: -60px; }
+    .ticker-wrap { padding: 14px 0; margin-top: 64px; }
+
+    /* ABOUT STRIP */
+    .about-strip { padding: 56px 20px; }
+    .about-strip-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .about-headline { font-size: clamp(28px, 7vw, 38px); }
+
+    /* EDUCATION */
+    .edu-item {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .edu-meta { text-align: left; }
+
+    /* BENTO / WORKS GRID */
+    .bento-grid {
+      grid-template-columns: 1fr !important;
+      padding: 0 20px 40px !important;
+    }
+    .bento-card { grid-column: span 1 !important; grid-row: span 1 !important; min-height: 220px; }
+
+    /* FOOTER */
+    footer { padding: 48px 20px 36px; }
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .footer-right { align-items: flex-start; }
+    .footer-headline { font-size: clamp(30px, 8vw, 44px); }
+
+    /* SECTION PADDING */
+    section { padding-left: 20px; padding-right: 20px; }
+  }
 </style>
 
 <style>
@@ -1084,25 +1190,40 @@ window._setLoaderDone = function() { loaderDone = true; };
       <div class="about-eyebrow">About me</div>
       <h2 class="about-headline">Ananya Gupta -<br><em>engineering with intention</em></h2>
       <p class="about-body">
-        A Computer Science (IoT) student at VIT Vellore with a CGPA of 9.04, I believe technology is most powerful when it's invisible - when it just works, beautifully. I build systems at the intersection of hardware and software, lead with empathy, and design with precision.
+        As a second-year Computer Science student at VIT Vellore specialising in IoT, I am deeply interested in Data Science and the potential it holds to transform raw data into smarter systems and informed decisions. I approach my academic and personal pursuits with a disciplined mindset — maintaining strong academic performance while actively balancing co-curricular commitments, which has helped me develop effective time management as a skill central to my life. Beyond the classroom, I serve as Vice Chairperson of VIT MUNSoc, where leading a society has sharpened my ability to think critically, communicate, negotiate, and confidently engage with diverse audiences. What drives me is the opportunity to build technology that is intuitive and human-centered, while growing into a leader who can bridge technical insight with strategic thinking. I am actively seeking internships where curiosity and initiative are valued.
       </p>
     </div>
-    <div class="about-skills">
-      <div class="skill-row">
-        <div class="skill-label"><span>IoT & Embedded Systems</span><span>90%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+    <div class="about-education">
+      <div class="edu-eyebrow">Education</div>
+      <div class="edu-item">
+        <div class="edu-main">
+          <div class="edu-school">Vellore Institute of Technology</div>
+          <div class="edu-degree"><em>B.Tech, Computer Science &amp; Engineering (IoT)</em></div>
+        </div>
+        <div class="edu-meta">
+          <div class="edu-dates">July 2024 – May 2028</div>
+          <div class="edu-grade">CGPA: <strong>9.04 / 10</strong></div>
+        </div>
       </div>
-      <div class="skill-row">
-        <div class="skill-label"><span>Full Stack Development</span><span>82%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div>
+      <div class="edu-divider"></div>
+      <div class="edu-item">
+        <div class="edu-main">
+          <div class="edu-school">Sanskar Public School, Gwalior</div>
+          <div class="edu-degree"><em>Class 12th, CBSE Board</em></div>
+        </div>
+        <div class="edu-meta">
+          <div class="edu-grade">Percentage: <strong>89.8%</strong></div>
+        </div>
       </div>
-      <div class="skill-row">
-        <div class="skill-label"><span>Leadership & Communication</span><span>95%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-      </div>
-      <div class="skill-row">
-        <div class="skill-label"><span>UI/UX & Design</span><span>75%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+      <div class="edu-divider"></div>
+      <div class="edu-item">
+        <div class="edu-main">
+          <div class="edu-school">Little Angels High School, Gwalior</div>
+          <div class="edu-degree"><em>Class 10th, CBSE Board</em></div>
+        </div>
+        <div class="edu-meta">
+          <div class="edu-grade">Percentage: <strong>96.8%</strong></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1118,11 +1239,11 @@ window._setLoaderDone = function() { loaderDone = true; };
           <span>ananya@example.com</span>
           <span class="social-arrow">→</span>
         </a>
-        <a class="social-link" href="#">
+        <a class="social-link" href="https://www.linkedin.com/in/ananya-gupta-b0a1962a8/" target="_blank">
           <span>LinkedIn</span>
           <span class="social-arrow">→</span>
         </a>
-        <a class="social-link" href="#">
+        <a class="social-link" href="https://github.com/ananyagpt1105" target="_blank">
           <span>GitHub</span>
           <span class="social-arrow">→</span>
         </a>
