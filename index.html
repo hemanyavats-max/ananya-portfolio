@@ -581,7 +581,7 @@
 /* ─── LOADER STYLES ─── */
 #loader {
   position: fixed; inset: 0; z-index: 10000;
-  background: #0a0306;
+  background: #2d0a22;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
   transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1), transform 0.9s cubic-bezier(0.4,0,0.2,1);
@@ -784,7 +784,7 @@ vec3 getLineColor(float t) {
   int idx = int(floor(scaled));
   float f = fract(scaled);
   int idx2 = min(idx + 1, lineGradientCount - 1);
-  return mix(lineGradient[idx], lineGradient[idx2], f) * 0.18;
+  return mix(lineGradient[idx], lineGradient[idx2], f) * 0.24;
 }
 
 float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool bend) {
@@ -827,7 +827,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
       vec3 lc = getLineColor(fi / max(float(middleLineCount-1), 1.0));
       float angle = middleWavePosition.z * log(length(uv) + 1.0);
       vec2 ruv = uv * rotate(angle);
-      col += lc * wave(ruv + vec2(middleLineDistance * fi + middleWavePosition.x, middleWavePosition.y), 2.0 + 0.15*fi, uv, mouseUv, interactive) * 0.18;
+      col += lc * wave(ruv + vec2(middleLineDistance * fi + middleWavePosition.x, middleWavePosition.y), 2.0 + 0.15*fi, uv, mouseUv, interactive) * 0.24;
     }
   }
   if (enableTop) {
