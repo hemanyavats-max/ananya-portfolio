@@ -569,13 +569,11 @@ loop();
 <script>
 (function(){
   var container = document.getElementById('ascii-bg');
-
-  // charset — no backtick, defined as regular string concatenation
   var CHARSET = " .'\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
-
   var TEXT = 'WORKS';
-  var FONT_SIZE_SRC = window.innerWidth < 768 ? 100 : 240;   // source text px size
-  var ASCII_FONT_PX = window.innerWidth < 768 ? 7 : 9;       // rendered ascii char size
+  var isMobile = window.innerWidth < 768;
+  var FONT_SIZE_SRC = isMobile ? 80 : 340;
+  var ASCII_FONT_PX = isMobile ? 6 : 11;
   var time = 0;
   var mouseX = 0.5, mouseY = 0.5;
 
@@ -584,117 +582,94 @@ loop();
     mouseY = e.clientY / window.innerHeight;
   }, { passive: true });
 
-  // Build <pre> for ASCII output
   var pre = document.createElement('pre');
-  pre.style.position = 'absolute';
-  pre.style.left = '50%';
-  pre.style.top = '50%';
-  pre.style.transform = 'translate(-50%,-50%)';
-  pre.style.fontFamily = '"Courier New", Courier, monospace';
-  pre.style.fontSize = ASCII_FONT_PX + 'px';
-  pre.style.lineHeight = '1em';
-  pre.style.margin = '0';
-  pre.style.padding = '0';
-  pre.style.whiteSpace = 'pre';
-  pre.style.color = '#f2b8ca';
-  pre.style.userSelect = 'none';
-  pre.style.pointerEvents = 'none';
-  pre.style.letterSpacing = '0.05em';
+  pre.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Courier New",Courier,monospace;font-size:'+ASCII_FONT_PX+'px;line-height:1em;margin:0;padding:0;white-space:pre;color:#f2b8ca;user-select:none;pointer-events:none;letter-spacing:0.05em;';
   container.appendChild(pre);
 
-  // Draw source text onto an offscreen canvas
-  function makeTextCanvas(waveMag, mxOff) {
-    // First pass: measure
+  function run() {
+    // measure text with correct font
     var mc = document.createElement('canvas');
     var mctx = mc.getContext('2d');
     var srcFont = '700 ' + FONT_SIZE_SRC + 'px "Cormorant Garamond", Georgia, serif';
     mctx.font = srcFont;
-    var m = mctx.measureText(TEXT);
-    var tW = Math.ceil(m.width) + 60;
-    var tH = FONT_SIZE_SRC + 40;
+    var textW = Math.ceil(mctx.measureText(TEXT).width);
+    var tW = textW + 20;
+    var tH = FONT_SIZE_SRC + 20;
 
-    // Canvas is exactly the text size — centering is handled by the pre element
-    var wc = document.createElement('canvas');
-    wc.width = tW + 80; wc.height = tH;
-    var wctx = wc.getContext('2d');
-    wctx.font = srcFont;
-    wctx.fillStyle = '#f2b8ca';
-    wctx.textBaseline = 'alphabetic';
+    // measure ascii char width
+    var cm = document.createElement('canvas');
+    var cmctx = cm.getContext('2d');
+    cmctx.font = ASCII_FONT_PX + 'px "Courier New", Courier, monospace';
+    var charW = Math.ceil(cmctx.measureText('M').width);
 
-    var stripH = 3;
-    // draw base text to a temp canvas first
-    var tmp = document.createElement('canvas');
-    tmp.width = tW; tmp.height = tH;
-    var tctx = tmp.getContext('2d');
-    tctx.font = srcFont;
-    tctx.fillStyle = '#f2b8ca';
-    tctx.textBaseline = 'alphabetic';
-    tctx.fillText(TEXT, 10, FONT_SIZE_SRC);
+    function makeTextCanvas(waveMag, mxOff) {
+      var wc = document.createElement('canvas');
+      wc.width = tW; wc.height = tH;
+      var wctx = wc.getContext('2d');
 
-    // now draw in horizontal strips with sine wave offset
-    for (var y = 0; y < tH; y += stripH) {
-      var wave = Math.sin(time * 2.2 + y * 0.035) * waveMag;
-      var xOff = wave + mxOff + 40;
-      wctx.drawImage(tmp, 0, y, tW, stripH, xOff, y, tW, stripH);
-    }
+      var tmp = document.createElement('canvas');
+      tmp.width = tW; tmp.height = tH;
+      var tctx = tmp.getContext('2d');
+      tctx.font = srcFont;
+      tctx.fillStyle = '#f2b8ca';
+      tctx.textBaseline = 'alphabetic';
+      tctx.fillText(TEXT, 10, FONT_SIZE_SRC - 4);
 
-    return wc;
-  }
-
-  // Convert rendered canvas to ASCII string
-  function toAscii(srcCanvas) {
-    var W = srcCanvas.width, H = srcCanvas.height;
-    // measure char size
-    var mc = document.createElement('canvas');
-    var mctx = mc.getContext('2d');
-    mctx.font = ASCII_FONT_PX + 'px "Courier New", Courier, monospace';
-    var charW = Math.ceil(mctx.measureText('M').width);
-    var cols = Math.floor(W / charW);
-    var rows = Math.floor(H / ASCII_FONT_PX);
-
-    // downsample
-    var tmp = document.createElement('canvas');
-    tmp.width = cols; tmp.height = rows;
-    var tctx = tmp.getContext('2d');
-    tctx.drawImage(srcCanvas, 0, 0, cols, rows);
-    var px = tctx.getImageData(0, 0, cols, rows).data;
-
-    var str = '';
-    for (var y = 0; y < rows; y++) {
-      for (var x = 0; x < cols; x++) {
-        var i = (y * cols + x) * 4;
-        var a = px[i + 3];
-        if (a < 8) { str += ' '; continue; }
-        var gray = (0.299 * px[i] + 0.587 * px[i+1] + 0.114 * px[i+2]) / 255;
-        // invert: bright pixels = dense chars
-        var idx = Math.floor(gray * (CHARSET.length - 1));
-        idx = Math.max(0, Math.min(CHARSET.length - 1, idx));
-        str += CHARSET[idx];
+      var stripH = 3;
+      for (var y = 0; y < tH; y += stripH) {
+        var wave = Math.sin(time * 2.2 + y * 0.035) * waveMag;
+        var xOff = wave + mxOff;
+        wctx.drawImage(tmp, 0, y, tW, stripH, xOff, y, tW, stripH);
       }
-      str += '\n';
+      return wc;
     }
-    return str;
+
+    function toAscii(srcCanvas) {
+      var W = srcCanvas.width, H = srcCanvas.height;
+      var cols = Math.floor(W / charW);
+      var rows = Math.floor(H / ASCII_FONT_PX);
+      var tmp2 = document.createElement('canvas');
+      tmp2.width = cols; tmp2.height = rows;
+      var t2ctx = tmp2.getContext('2d');
+      t2ctx.drawImage(srcCanvas, 0, 0, cols, rows);
+      var px = t2ctx.getImageData(0, 0, cols, rows).data;
+      var str = '';
+      for (var y = 0; y < rows; y++) {
+        for (var x = 0; x < cols; x++) {
+          var i = (y * cols + x) * 4;
+          var a = px[i + 3];
+          if (a < 8) { str += ' '; continue; }
+          var gray = (0.299 * px[i] + 0.587 * px[i+1] + 0.114 * px[i+2]) / 255;
+          var idx = Math.min(CHARSET.length - 1, Math.floor(gray * (CHARSET.length - 1)));
+          str += CHARSET[idx];
+        }
+        str += '\n';
+      }
+      return str;
+    }
+
+    function frame() {
+      var waveMag = isMobile ? 2 + Math.sin(time * 0.4) : 7 + Math.sin(time * 0.4) * 3;
+      var mxOff = (mouseX - 0.5) * (isMobile ? 6 : 24);
+      var srcCanvas = makeTextCanvas(waveMag, mxOff);
+      pre.textContent = toAscii(srcCanvas);
+      var rotX = (mouseY - 0.5) * -10;
+      var rotY = (mouseX - 0.5) * 18;
+      pre.style.transform = 'translate(-50%,-50%) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+      time += 0.022;
+      requestAnimationFrame(frame);
+    }
+
+    frame();
   }
 
-  function frame() {
-    var isMobile = window.innerWidth < 768;
-    var waveMag = isMobile ? 3 + Math.sin(time * 0.4) * 1 : 7 + Math.sin(time * 0.4) * 3;
-    var mxOff = (mouseX - 0.5) * (isMobile ? 8 : 24);
-
-    var srcCanvas = makeTextCanvas(waveMag, mxOff);
-    var ascii = toAscii(srcCanvas);
-    pre.textContent = ascii;
-
-    // mouse-driven 3D tilt
-    var rotX = (mouseY - 0.5) * -10;
-    var rotY = (mouseX - 0.5) * 18;
-    pre.style.transform = 'translate(-50%,-50%) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-
-    time += 0.022;
-    requestAnimationFrame(frame);
+  // Wait for font to be ready before starting
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(run);
+  } else {
+    setTimeout(run, 500);
   }
 
-  frame();
 })();
 </script>
 
